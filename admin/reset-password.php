@@ -9,7 +9,7 @@ error_reporting(0);
 if(isset($_POST['submit']))
 {
  $mobno=$_SESSION['mobilenumber'];
-    $email=$_SESSION['email'];
+$email=$_SESSION['email'];
 $newpassword=md5($_POST['newpassword']);
 $query=mysqli_query($con,"update tbladmin set Password ='$newpassword' where  Email='$email' && MobileNumber = $mobno ");
 $row=mysqli_fetch_array($query);
@@ -36,20 +36,20 @@ session_destroy();
   <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css"
   rel="stylesheet">
   <!-- BEGIN VENDOR CSS-->
-  <link rel="stylesheet" type="text/css" href="app-assets/css/vendors.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/forms/icheck/icheck.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/forms/icheck/custom.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/css/vendors.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/icheck.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/custom.css">
   <!-- END VENDOR CSS-->
   <!-- BEGIN MODERN CSS-->
-  <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
   <!-- END MODERN CSS-->
   <!-- BEGIN Page Level CSS-->
-  <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="app-assets/css/pages/login-register.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
+  <link rel="stylesheet" type="text/css" href="../app-assets/css/pages/login-register.css">
   <!-- END Page Level CSS-->
   <!-- BEGIN Custom CSS-->
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <!--<link rel="stylesheet" type="text/css" href="../assets/css/style-starter.css">-->
   <!-- END Custom CSS-->
 <script type="text/javascript">
 function checkpass()
@@ -169,20 +169,20 @@ data-open="click" data-menu="vertical-menu" data-col="1-column">
     </p>
   </footer>
   <!-- BEGIN VENDOR JS-->
-  <script src="/../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
   <!-- BEGIN VENDOR JS-->
   <!-- BEGIN PAGE VENDOR JS-->
-  <script src="app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"
+  <script src="../app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"
   type="text/javascript"></script>
-  <script src="app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
+  <script src="../app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
   <!-- END PAGE VENDOR JS-->
   <!-- BEGIN MODERN JS-->
-  <script src="app-assets/js/core/app-menu.js" type="text/javascript"></script>
-  <script src="app-assets/js/core/app.js" type="text/javascript"></script>
-  <script src="app-assets/js/scripts/customizer.js" type="text/javascript"></script>
+  <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
+  <script src="../app-assets/js/core/app.js" type="text/javascript"></script>
+  <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
   <!-- END MODERN JS-->
   <!-- BEGIN PAGE LEVEL JS-->
-  <script src="app-assets/js/scripts/forms/form-login-register.js" type="text/javascript"></script>
+  <script src="../app-assets/js/scripts/forms/form-login-register.js" type="text/javascript"></script>
   <!-- END PAGE LEVEL JS-->
 </body>
 </html>
