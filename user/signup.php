@@ -2,24 +2,52 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('user/2F/otp_generator.php');
+include('PHPMailer/mailer_demo.php');
+
 if (isset($_POST['submit'])) {
-  $fname = $_POST['firstname'];
-  $lname = $_POST['lastname'];
-  $contno = $_POST['contactno'];
-  $email = $_POST['email'];
-  $password = md5($_POST['password']);
-  $ret = mysqli_query($con, "select Email from tbluser where Email='$email' || MobileNumber='$contno'");
-  $result = mysqli_fetch_array($ret);
-  if ($result > 0) {
-    echo "<script>alert('This email or Contact Number already associated with another account');</script>";
-  } else {
-    $query = mysqli_query($con, "insert into tbluser(FirstName, LastName,MobileNumber, Email,  Password) value('$fname', '$lname','$contno', '$email', '$password' )");
-    if ($query) {
-      echo "<script>alert('You have successfully registered');</script>";
+    $fname = $_POST['firstname'];
+    $lname = $_POST['lastname'];
+    $contno = $_POST['contactno'];
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+
+    // Check if email or contact already exists
+    $ret = mysqli_query($con, "SELECT Email FROM tbluser WHERE Email='$email' || MobileNumber='$contno'");
+    $result = mysqli_fetch_array($ret);
+
+    if ($result > 0) {
+        echo "<script>alert('This email or Contact Number is already associated with another account');</script>";
     } else {
-      echo "<script>alert('Something Went Wrong. Please try again');</script>";
+        // Insert user data into the database
+        $query = mysqli_query($con, "INSERT INTO tbluser (FirstName, LastName, MobileNumber, Email, Password) 
+                                     VALUES ('$fname', '$lname', '$contno', '$email', '$password')");
+        if ($query) {
+            // Generate OTP
+            $otp = generateOTP();
+            $_SESSION['otp'] = $otp;
+            $_SESSION['email'] = $email;
+
+            // Send OTP via email
+            $subject = "Your OTP for PKMS Registration";
+            $body = "<p>Dear $fname,</p>
+                     <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
+                     <p>This OTP is valid for 10 minutes.</p>
+                     <p>Thank you,<br>PKMS Team</p>";
+
+            if (sendMail($email, $subject, $body)) {
+                echo "<script>
+                        alert('OTP sent to your email. Redirecting to the verification page...');
+                        window.location.href = 'otp_verification.php';
+                      </script>";
+                exit();
+            } else {
+                echo "<script>alert('Unable to send OTP. Please try again.');</script>";
+            }
+        } else {
+            echo "<script>alert('Something went wrong. Please try again.');</script>";
+        }
     }
-  }
 }
 ?>
 
