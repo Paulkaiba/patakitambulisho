@@ -1,11 +1,15 @@
 <?php
 session_start();
-error_reporting(0);
-include('includes/dbconnection.php');
-include('user/2F/otp_generator.php');
-include('PHPMailer/mailer_demo.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+include('includes/dbconnection.php');
+include('2F/otp_generator.php');
+
+// Only include mailer_demo.php if the form is submitted and the OTP needs to be sent
 if (isset($_POST['submit'])) {
+    include('../PHPMailer/mailer_demo.php');
+
     $fname = $_POST['firstname'];
     $lname = $_POST['lastname'];
     $contno = $_POST['contactno'];
@@ -23,30 +27,30 @@ if (isset($_POST['submit'])) {
         $query = mysqli_query($con, "INSERT INTO tbluser (FirstName, LastName, MobileNumber, Email, Password) 
                                      VALUES ('$fname', '$lname', '$contno', '$email', '$password')");
         if ($query) {
-            // Generate OTP
-            $otp = generateOTP();
-            $_SESSION['otp'] = $otp;
-            $_SESSION['email'] = $email;
+          // Generate OTP
+          $otp = generateOTP();
 
-            // Send OTP via email
-            $subject = "Your OTP for PKMS Registration";
-            $body = "<p>Dear $fname,</p>
-                     <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
-                     <p>This OTP is valid for 10 minutes.</p>
-                     <p>Thank you,<br>PKMS Team</p>";
+          $_SESSION['otp'] = $otp;
+          $_SESSION['email'] = $email;
 
-            if (sendMail($email, $subject, $body)) {
-                echo "<script>
-                        alert('OTP sent to your email. Redirecting to the verification page...');
-                        window.location.href = 'otp_verification.php';
-                      </script>";
-                exit();
+          //Send OTP via email
+          $subject = "Your OTP for PKMS Registration";
+          $body = "<p>Dear $fname,</p>
+                   <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
+                   <p>This OTP is valid for 10 minutes.</p>
+                   <p>Thank you,<br>PKMS Team</p>";
+
+                   if (sendMail($email, $otp)) {
+                    echo "<script>
+                            alert('OTP sent to your email. Redirecting to the verification page...');
+                            window.location.href = 'twofactor.php';
+                          </script>";
+                } else {
+                    echo "<script>alert('Unable to send OTP. Please try again.');</script>";
+                }
             } else {
-                echo "<script>alert('Unable to send OTP. Please try again.');</script>";
+                echo "<script>alert('Something went wrong. Please try again.');</script>";
             }
-        } else {
-            echo "<script>alert('Something went wrong. Please try again.');</script>";
-        }
     }
 }
 ?>

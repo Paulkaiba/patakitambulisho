@@ -1,23 +1,35 @@
 <?php
 session_start();
+
+// Include the OTP generation file
+include('2F/otp_generator.php');
+
 if (isset($_POST['verify'])) {
     $inputOtp = $_POST['otp'];
 
     // Check if the input OTP matches the session OTP
     if ($inputOtp == $_SESSION['otp']) {
-        // Successful OTP verification
-        echo "<script>alert('OTP verification successful. Redirecting to dashboard...');</script>";
-        
         // Clear OTP from session to prevent reuse
         unset($_SESSION['otp']);
         
+        // Successful OTP verification
+        echo "<script>alert('OTP verification successful. Redirecting to dashboard...');</script>";
+        
         // Redirect to dashboard.php
-        header("Location: dashboard.php");
+        echo "<script>window.location.href='dashboard.php';</script>";
         exit();
     } else {
         // OTP verification failed
         echo "<script>alert('Invalid OTP. Please try again.');</script>";
     }
+}
+
+if (isset($_POST['resend'])) {
+    // Call the generateOTP function from otp_generate.php
+    $_SESSION['otp'] = generateOTP();
+
+    // Inform the user that a new OTP has been sent
+    echo "<script>alert('A new OTP has been sent to your registered email or phone number.');</script>";
 }
 ?>
 <!DOCTYPE html>
@@ -110,7 +122,8 @@ if (isset($_POST['verify'])) {
                   <form method="post">
         <label for="otp">Enter OTP:</label>
         <input type="text" name="otp" id="otp" required>
-        <button type="submit" name="verify">Verify OTP</button>
+                      <button type="submit" name="verify">Verify OTP</button>
+                      <button type="submit" name="resend">Resend OTP</button>
     </form>
                   </div>
                 </div>

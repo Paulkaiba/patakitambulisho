@@ -1,12 +1,17 @@
 <?php
+
+
 function generateOTP($length = 6) {
     $otp = '';
     for ($i = 0; $i < $length; $i++) {
         $otp .= mt_rand(0, 9);
     }
-    echo $otp;
+    $_SESSION['otp'] = $otp; // Store OTP in session
     return $otp;
 }
-//$generatedOTP = generateOTP();
-//echo "Returned OTP: $generatedOTP<br>"; // Display the returned OTP
+
+// Generate the OTP and store it in the session
+$otp = generateOTP();
+//echo "Generated OTP: $otp"; // For debugging (optional)
 ?>
+
