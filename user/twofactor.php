@@ -39,19 +39,38 @@ if (isset($_POST['verify'])) {
     if (isset($_SESSION['otp']) && $inputOtp == $_SESSION['otp']) {
         // Clear OTP from session to prevent reuse
         unset($_SESSION['otp']);
-        
+
         // Successful OTP verification
-        echo "<script>alert('OTP verification successful. Redirecting to dashboard...');</script>";
-        
-        // Redirect to dashboard.php
-        echo "<script>window.location.href='dashboard.php';</script>";
-        exit();
+        // Fetch the user ID from the database
+        if (isset($_SESSION['email'])) {
+            include('includes/dbconnection.php');
+
+            $email = $_SESSION['email'];
+            $query = "SELECT ID FROM tbluser WHERE Email='$email'";
+            $result = mysqli_query($con, $query);
+
+            // Check if the user exists
+            if ($result && mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $_SESSION['uid'] = $row['ID']; // Store the user ID in session
+
+                // Redirect to dashboard.php
+                echo "<script>alert('OTP verification successful. Redirecting to dashboard...');</script>";
+                echo "<script>window.location.href='dashboard.php';</script>";
+                exit();
+            } else {
+                echo "<script>alert('User not found in database. Please try again.');</script>";
+            }
+        } else {
+            echo "<script>alert('No email address found in session.');</script>";
+        }
     } else {
         // OTP verification failed
         echo "<script>alert('Invalid OTP. Please try again.');</script>";
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
