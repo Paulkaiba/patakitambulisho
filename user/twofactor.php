@@ -1,14 +1,42 @@
 <?php
 session_start();
 
-// Include the OTP generation file
-include('2F/otp_generator.php');
+// Debugging session values
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
 
+// Handle OTP resend via a GET request
+if (isset($_GET['resend'])) {
+    // Include the OTP generator and mailer files
+    include('2F/otp_generator.php');
+    include('../PHPMailer/mailer_demo.php');
+
+    // Generate a new OTP and save it to the session
+    $_SESSION['otp'] = generateOTP();
+
+    // Ensure email exists in the session
+    if (isset($_SESSION['email'])) {
+        $email = $_SESSION['email'];
+        $otp = $_SESSION['otp'];
+
+        // Call the sendMail function
+        if (sendMail($email, $otp)) {
+            echo "<script>alert('A new OTP has been sent to your registered email.');</script>";
+        } else {
+            echo "<script>alert('Failed to send OTP. Please try again later.');</script>";
+        }
+    } else {
+        echo "<script>alert('No email address found in session.');</script>";
+    }
+}
+
+// Verify OTP when the "Verify" button is pressed
 if (isset($_POST['verify'])) {
     $inputOtp = $_POST['otp'];
 
     // Check if the input OTP matches the session OTP
-    if ($inputOtp == $_SESSION['otp']) {
+    if (isset($_SESSION['otp']) && $inputOtp == $_SESSION['otp']) {
         // Clear OTP from session to prevent reuse
         unset($_SESSION['otp']);
         
@@ -23,15 +51,9 @@ if (isset($_POST['verify'])) {
         echo "<script>alert('Invalid OTP. Please try again.');</script>";
     }
 }
-
-if (isset($_POST['resend'])) {
-    // Call the generateOTP function from otp_generate.php
-    $_SESSION['otp'] = generateOTP();
-
-    // Inform the user that a new OTP has been sent
-    echo "<script>alert('A new OTP has been sent to your registered email or phone number.');</script>";
-}
 ?>
+
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 
@@ -120,11 +142,13 @@ if (isset($_POST['resend'])) {
                   <div class="card-body">
 
                   <form method="post">
-        <label for="otp">Enter OTP:</label>
-        <input type="text" name="otp" id="otp" required>
+                      <label for="otp">Enter OTP:</label>
+                      <input type="text" name="otp" id="otp" required>
                       <button type="submit" name="verify">Verify OTP</button>
-                      <button type="submit" name="resend">Resend OTP</button>
-    </form>
+                    </form>
+                    <p>
+                      <a href="?resend=true">Resend the OTP</a>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -132,6 +156,8 @@ if (isset($_POST['resend'])) {
           </div>
         </section>
       </div>
+      <p>
+    </p>
     </div>
   </div>
   <!-- ////////////////////////////////////////////////////////////////////////////-->
