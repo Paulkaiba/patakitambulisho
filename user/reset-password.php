@@ -34,9 +34,8 @@ if(isset($_POST['submit'])) {
     <!-- BEGIN Page Level CSS-->
     <?php includePageLevelCSS() ?>
         <!-- BEGIN Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-    <!-- END Custom CSS-->
-    <script type="text/javascript">
+    <?php includeCustomCSS() ?>
+     <script type="text/javascript">
         function checkpass() {
             if(document.resetpassword.newpassword.value != document.resetpassword.confirmpassword.value) {
                 alert('New Password and Confirm Password field does not match');
