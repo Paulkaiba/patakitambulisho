@@ -7,7 +7,15 @@ function includeVendorCSS() {
     <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/custom.css">
   ';
 }
-
+// Function to include favicon images files
+function includefavicon() {
+    echo '
+      <link rel="icon" href="../assets/images/favicon/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
+    ';
+  }
 // Function to include Page Level CSS files
 function includePageLevelCSS() {
   echo '
@@ -16,7 +24,11 @@ function includePageLevelCSS() {
     <link rel="stylesheet" type="text/css" href="../app-assets/css/pages/login-register.css">
   ';
 }
-
+function includemodernCSS() {
+    echo '
+       <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
+    ';
+  }
 // Function to include Custom CSS files
 function includeCustomCSS() {
   echo '<link rel="stylesheet" type="text/css" href="../assets/css/style.css">';

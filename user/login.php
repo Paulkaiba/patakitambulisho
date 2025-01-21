@@ -18,6 +18,8 @@ if (isset($_POST['login'])) {
     echo "<script>alert('Invalid Details');</script>";
   }
 }
+
+include('layouts/SLFRC.php');
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -30,14 +32,9 @@ if (isset($_POST['login'])) {
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/vendors.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/icheck.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/custom.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/pages/login-register.css">
-  <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+  <?php includeVendorCSS() ?>
+  <?php includemodernCSS() ?>
+  <?php includePageLevelCSS() ?>
 </head>
 
 <body class="vertical-layout vertical-menu 1-column  bg-cyan bg-lighten-2 menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="1-column">
