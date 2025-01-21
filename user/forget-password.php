@@ -15,36 +15,37 @@ if(isset($_POST['submit']))
     if($ret>0){
       $_SESSION['mobilenumber']=$mobno;
       $_SESSION['email']=$email;
-     echo "<script type='text/javascript'> document.location ='reset-password.php'; </script>";
+      
+      if ($query) {
+        // Generate OTP
+        $otp = generateOTP();
+  
+        $_SESSION['otp'] = $otp;
+        $_SESSION['email'] = $email;
+  
+        //Send OTP via email
+        $subject = "Your OTP for PKMS Registration";
+        $body = "<p>Dear $fname,</p>
+                 <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
+                 <p>This OTP is valid for 10 minutes.</p>
+                 <p>Thank you,<br>PKMS Team</p>";
+  
+                 if (sendMail($email, $otp)) {
+                  echo "<script>
+                          alert('OTP sent to your email. Redirecting to the verification page...');
+                          window.location.href = 'twofactorf.php';
+                        </script>";
+              } else {
+                  echo "<script>alert('Unable to send OTP. Please try again.');</script>";
+              }
+          } else {
+              echo "<script>alert('Something went wrong. Please try again.');</script>";
+          }
     }
     else{
        echo "<script>alert('Invalid Details. Please try again.');</script>";
     }
-    if ($query) {
-      // Generate OTP
-      $otp = generateOTP();
-
-      $_SESSION['otp'] = $otp;
-      $_SESSION['email'] = $email;
-
-      //Send OTP via email
-      $subject = "Your OTP for PKMS Registration";
-      $body = "<p>Dear $fname,</p>
-               <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
-               <p>This OTP is valid for 10 minutes.</p>
-               <p>Thank you,<br>PKMS Team</p>";
-
-               if (sendMail($email, $otp)) {
-                echo "<script>
-                        alert('OTP sent to your email. Redirecting to the verification page...');
-                        window.location.href = 'twofactor.php';
-                      </script>";
-            } else {
-                echo "<script>alert('Unable to send OTP. Please try again.');</script>";
-            }
-        } else {
-            echo "<script>alert('Something went wrong. Please try again.');</script>";
-        }
+    
   }
   ?>
 
