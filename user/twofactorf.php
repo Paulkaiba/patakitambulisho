@@ -82,22 +82,14 @@ if (isset($_POST['verify'])) {
   </title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700" rel="stylesheet">
   <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
-  <!-- BEGIN VENDOR CSS-->
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/vendors.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/icheck.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/forms/icheck/custom.css">
-  <!-- END VENDOR CSS-->
+   <!-- BEGIN VENDOR CSS-->
+ <?php includeVendorCSS() ?>  <!-- END VENDOR CSS-->
   <!-- BEGIN MODERN CSS-->
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/app.css">
-  <!-- END MODERN CSS-->
+ <?php includemodernCSS() ?>  
   <!-- BEGIN Page Level CSS-->
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/core/colors/palette-gradient.css">
-  <link rel="stylesheet" type="text/css" href="../app-assets/css/pages/login-register.css">
-  <!-- END Page Level CSS-->
+  <?php includePageLevelCSS()?>  <!-- END Page Level CSS-->
   <!-- BEGIN Custom CSS-->
-  <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-  <!-- END Custom CSS-->
+ <?php includeCustomCSS() ?>  
   <script type="text/javascript">
     function checkpass() {
       if (document.signup.password.value != document.signup.repeatpassword.value) {
