@@ -105,32 +105,7 @@ if (isset($_POST['verify'])) {
 
 <body class="vertical-layout vertical-menu 1-column  bg-cyan bg-lighten-2 menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="1-column">
   <!-- fixed-top-->
-  <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-dark navbar-shadow">
-    <div class="navbar-wrapper">
-      <div class="navbar-header">
-        <ul class="nav navbar-nav flex-row">
-          <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
-          <li class="nav-item">
-            <a class="navbar-brand" href="../index.php">
-
-              <h3 class="brand-text">Pata kitambulisho Management System | Two Factor Authenticator</h3>
-            </a>
-          </li>
-          <li class="nav-item d-md-none">
-            <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a>
-          </li>
-        </ul>
-      </div>
-      <div class="navbar-container">
-        <div class="collapse navbar-collapse justify-content-end" id="navbar-mobile">
-          <ul class="nav navbar-nav">
-            <li class="nav-item"><a class="nav-link mr-2 nav-link-label" href="../index.php"><i class="ficon ft-arrow-left"></i></a></li>
-
-          </ul>
-        </div>
-      </div>
-    </div>
-  </nav>
+  <?php includeNavbar() ?>
   <!-- ////////////////////////////////////////////////////////////////////////////-->
   <div class="app-content content">
     <div class="content-wrapper">
@@ -172,18 +147,9 @@ if (isset($_POST['verify'])) {
     </div>
   </div>
   <!-- ////////////////////////////////////////////////////////////////////////////-->
-  <footer class="footer fixed-bottom footer-dark navbar-border navbar-shadow">
-    <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
-      <span class="float-md-left d-block d-md-inline-block">Copyright &copy; <?php echo date('Y'); ?> <a class="text-bold-800 grey darken-2">PKMS </a>, All rights reserved. </span>
-    </p>
-  </footer>
-  <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/forms/validation/jqBootstrapValidation.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
-  <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
-  <script src="../app-assets/js/core/app.js" type="text/javascript"></script>
-  <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
-  <script src="../app-assets/js/scripts/forms/form-login-register.js" type="text/javascript"></script>
+  <?php includeFooter() ?>
+  <?php includeVendorJS()?>
+  <?php includeAppJS()?>
 </body>
 
 </html>
