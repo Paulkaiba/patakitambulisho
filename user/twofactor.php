@@ -186,7 +186,6 @@ if (isset($_POST['verify'])) {
     </p>
   </footer>
   <?php includeVendorJS()?>
-  <?php includeAppJS()?> 
-</body>
+  <?php includeAppJS()?> </body>
 
 </html>
