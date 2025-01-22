@@ -185,13 +185,8 @@ if (isset($_POST['verify'])) {
       <span class="float-md-left d-block d-md-inline-block">Copyright &copy; <?php echo date('Y'); ?> <a class="text-bold-800 grey darken-2">PKMS </a>, All rights reserved. </span>
     </p>
   </footer>
-  <script src="../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/forms/validation/jqBootstrapValidation.js" type="text/javascript"></script>
-  <script src="../app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
-  <script src="../app-assets/js/core/app-menu.js" type="text/javascript"></script>
-  <script src="../app-assets/js/core/app.js" type="text/javascript"></script>
-  <script src="../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
-  <script src="../app-assets/js/scripts/forms/form-login-register.js" type="text/javascript"></script>
+  <?php includeVendorJS()?>
+  <?php includeAppJS()?> 
 </body>
 
 </html>
