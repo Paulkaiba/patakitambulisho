@@ -15,7 +15,11 @@ $query=mysqli_query($con,"update tbladmin set Password ='$newpassword' where  Em
 $row=mysqli_fetch_array($query);
 if($query)
    {
-echo "<script>alert('Password successfully changed');</script>";
+echo "<script>
+alert('Password successfully changed');
+window.location.href = 'login.php';
+</script>";
+
 session_destroy();
    }
   
@@ -49,7 +53,7 @@ session_destroy();
   <link rel="stylesheet" type="text/css" href="../app-assets/css/pages/login-register.css">
   <!-- END Page Level CSS-->
   <!-- BEGIN Custom CSS-->
-  <!--<link rel="stylesheet" type="text/css" href="../assets/css/style-starter.css">-->
+  <link rel="stylesheet" type="text/css" href="../assets/css/style-starter.css">
   <!-- END Custom CSS-->
 <script type="text/javascript">
 function checkpass()
