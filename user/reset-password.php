@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/dbconnection.php');
 
 if(isset($_POST['submit'])) {
@@ -17,6 +17,7 @@ if(isset($_POST['submit'])) {
         echo "<script>alert('Failed to reset password');</script>";
     }
 }
+include('layouts/SLFRC.php');
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">

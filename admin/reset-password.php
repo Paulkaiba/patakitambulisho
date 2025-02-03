@@ -1,9 +1,10 @@
 <?php
 
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include('includes/dbconnection.php');
-error_reporting(0);
+
 
 
 if(isset($_POST['submit']))
@@ -12,7 +13,7 @@ if(isset($_POST['submit']))
 $email=$_SESSION['email'];
 $newpassword=md5($_POST['newpassword']);
 $query=mysqli_query($con,"update tbladmin set Password ='$newpassword' where  Email='$email' && MobileNumber = $mobno ");
-$row=mysqli_fetch_array($query);
+
 if($query)
    {
 echo "<script>

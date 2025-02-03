@@ -69,6 +69,7 @@ if (isset($_POST['verify'])) {
         echo "<script>alert('Invalid OTP. Please try again.');</script>";
     }
 }
+include('layouts/SLFRC.php');
 ?>
 
 
