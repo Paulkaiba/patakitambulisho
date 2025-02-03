@@ -24,8 +24,8 @@ if (isset($_POST['submit'])) {
     $fathername = $_POST['fathername'];
     $mothername = $_POST['mothername'];
     $maritalstatus = $_POST['maritalstatus'];
-    $partnername = ($_POST['maritalstatus'] == 'Married') ? $_POST['partnername'] : '';
-    $partnerid = ($_POST['maritalstatus'] == 'Married') ? $_POST['partnerid'] : '';
+    $partnername = ($_POST['maritalstatus'] == 'Married') ? $_POST['partnername'] : NULL;
+    $partnerid = ($_POST['maritalstatus'] == 'Married') ? $_POST['partnerid'] : NULL;
     $districtofbirth = $_POST['districtofbirth'];
     $tribe = $_POST['tribe'];
     $clan = $_POST['clan'];
@@ -35,6 +35,7 @@ if (isset($_POST['submit'])) {
     $location = $_POST['location'];
     $sublocation = $_POST['sublocation'];
     $occupation = $_POST['occupation'];
+    $Declaration = $_POST['Declaration'] ??'';
 
     // Upload directory
     $targetDir = "userimages/";
@@ -69,12 +70,12 @@ if (isset($_POST['submit'])) {
     $passportorregistrationcertificateName = basename($passportorregistrationcertificate);
     $schoolleavingcertificateName = basename($schoolleavingcertificate);
 
-    $sql = "INSERT INTO tbladmapplications (UserId, fullname, citizenpic, dob, gender, fathername, mothername, maritalstatus, partnername, partnerid, districtofbirth, tribe, clan, family, homedistrict, constituency, location, subLocation, Occupation, birthcertificatepic, religiouscard, passportorregistrationcertificate, schoolleavingcertificate) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO tbladmapplications (UserId, fullname, citizenpic, dob, gender, fathername, mothername, maritalstatus, partnername, partnerid, districtofbirth, tribe, clan, family, homedistrict, constituency, location, subLocation, Occupation, birthcertificatepic, religiouscard, passportorregistrationcertificate, schoolleavingcertificate,Declaration) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_stmt_init($con);
     if (mysqli_stmt_prepare($stmt, $sql)) {
         // Bind parameters and execute statement
-        mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssss", $uid, $fullname, $userpicName, $dob, $gender, $fathername, $mothername, $maritalstatus, $partnername, $partnerid, $districtofbirth, $tribe, $clan, $family, $homedistrict, $constituency, $location, $sublocation, $occupation, $birthCertificateName, $religiouscardName, $passportorregistrationcertificateName, $schoolleavingcertificateName);
+        mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssssss", $uid, $fullname, $userpicName, $dob, $gender, $fathername, $mothername, $maritalstatus, $partnername, $partnerid, $districtofbirth, $tribe, $clan, $family, $homedistrict, $constituency, $location, $sublocation, $occupation, $birthCertificateName, $religiouscardName, $passportorregistrationcertificateName, $schoolleavingcertificateName,$Declaration);
 
         // Execute statement
         if (mysqli_stmt_execute($stmt)) {
@@ -354,7 +355,7 @@ if (isset($_POST['submit'])) {
     <td colspan="4">
         <div class="col-xl-12 col-lg-12">
             <p>
-                I <input type="text" name="applicantname" class="form-control" required="true"> declare that the information provided in this
+                I <input type="text" name="Declaration" id="Declaration" class="form-control" required="true"> declare that the information provided in this
                 application is true to the best of my knowledge and belief. In case any information is found
                 incorrect or false, my application can be rejected, and necessary action can be taken against me.
             </p>

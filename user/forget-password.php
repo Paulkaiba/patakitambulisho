@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 include('includes/dbconnection.php');
 include('2F/otp_generator.php');
 
+$msg = "";
 if(isset($_POST['submit']))
   {
     include('../PHPMailer/mailer_demo.php');

@@ -3,22 +3,27 @@ session_start();
 error_reporting(E_ALL);
 include('includes/dbconnection.php');
 
+$msg = ""; // Initialize the variable to avoid the warning
+
 if(isset($_POST['submit'])) {
     $mobno = $_SESSION['mobilenumber'];
     $email = $_SESSION['email'];
     $newpassword = md5($_POST['newpassword']);
     $query = mysqli_query($con, "UPDATE tbluser SET Password ='$newpassword' WHERE Email='$email' AND MobileNumber = '$mobno'");
+
     if($query) {
-        echo "<script>alert('Password successfully changed');</script>";
+        $msg = "<span style='color:green;'>Password successfully changed</span>";
         session_destroy();
         echo "<script>window.location.href='login.php';</script>";
         exit;
     } else {
-        echo "<script>alert('Failed to reset password');</script>";
+        $msg = "<span style='color:red;'>Failed to reset password</span>";
     }
 }
+
 include('layouts/SLFRC.php');
 ?>
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <head>
