@@ -1,34 +1,51 @@
 <?php
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 include('includes/dbconnection.php');
     if (strlen($_SESSION['aid']==0)) {
   header('location:logout.php');
   } else{
 
-if(isset($_POST['submit']))
-  {
-$cid=$_GET['aticid'];
-$admrmk=$_POST['AdminRemark'];
-$admsta=$_POST['status'];
-$feeamt=$_POST['feeamt'];
-$toemail=$_POST['useremail'];
-$query=mysqli_query($con, "UPDATE tblstolenid SET AdminRemark='$admrmk', FeeAmount='$feeamt', AdminStatus='$admsta' WHERE UserId='$cid'");
-if ($query) {
-$subj="Admission Application Status";       
-$heade .= "MIME-Version: 1.0"."\r\n";
-$heade .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-$heade .= 'From:CAMS<noreply@yourdomain.com>'."\r\n";    // Put your sender email here
-$msgec.="<html></body><div><div>Hello,</div></br></br>";
-$msgec.="<div style='padding-top:8px;'>Your Admission application has been $$admsta ) </br>
-<strong>Admin Remark: </strong> $admrmk </div><div></div></body></html>";
-mail($toemail,$subj,$msgec,$heade);
-echo "<script>alert('Admin Remark and  Status has been updated.');</script>";
-echo "<script>window.location.href ='pending-stolenIDapplication.php'</script>";
-
-}else{
+    if (isset($_POST['submit'])) {
+      $cid = $_GET['aticid'];
+      $admrmk = $_POST['AdminRemark'];
+      $admsta = $_POST['status'];
+      $feeamt = $_POST['feeamt'];
+      $toemail = $_POST['useremail'];
+  
+      // Database update query
+      $query = mysqli_query($con, "UPDATE tblstolenid SET AdminRemark='$admrmk', FeeAmount='$feeamt', AdminStatus='$admsta' WHERE UserId='$cid'");
+  
+      if ($query) {
+          // Prepare email details
+          $subject = "Admission Application Status";
+          $body = "
+              <html>
+              <body>
+                  <div><strong>Hello,</strong></div><br><br>
+                  <div style='padding-top:8px;'>
+                      Your admission application has been <strong>$admsta</strong><br>
+                      <strong>Admin Remark:</strong> $admrmk
+                  </div>
+              </body>
+              </html>
+          ";
+         $query = mysqli_query($con, "SELECT FirstName tbluser WHERE ID='$cid' ");
+         $FirstName = $FirstName['FirstName'];
+          // Send Email using OOP
+          $emailService = new EmailService();
+          if ($emailService->sendEmail($toemail, $FirstName, $subject, $body)) {
+              echo "<script>alert('Admin Remark and Status has been updated. Email sent successfully.');</script>";
+          } else {
+              echo "<script>alert('Admin Remark and Status updated, but email failed to send.');</script>";
+          }
+  
+          echo "<script>window.location.href ='pending-stolenIDapplication.php'</script>";
+      }
+  }
+  else{
    echo "<script>alert('Something Went Wrong. Please try again.');</script>";
-   echo "<script>window.location.href ='pending-replaceIDapplication.php'</script>";
+   echo "<script>window.location.href ='pending-stolenIDapplication.php'</script>";
     } 
 }
  ?>
@@ -261,4 +278,4 @@ if($row['AdminStatus']=="2")
 </script>
 </body>
 </html>
-<?php  } ?>
+
