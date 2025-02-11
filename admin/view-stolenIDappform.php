@@ -2,57 +2,77 @@
 session_start();
 error_reporting(E_ALL);
 include('includes/dbconnection.php');
-    if (strlen($_SESSION['aid']==0)) {
-  header('location:logout.php');
-  } else{
 
+if (strlen($_SESSION['aid']) == 0) {
+    header('location:logout.php');
+} else {
     if (isset($_POST['submit'])) {
-      $cid = $_GET['aticid'];
-      $admrmk = $_POST['AdminRemark'];
-      $admsta = $_POST['status'];
-      $feeamt = $_POST['feeamt'];
-      $toemail = $_POST['useremail'];
-  
-      // Database update query
-      $query = mysqli_query($con, "UPDATE tblstolenid SET AdminRemark='$admrmk', FeeAmount='$feeamt', AdminStatus='$admsta' WHERE UserId='$cid'");
-  
-      if ($query) {
-          // Prepare email details
-          $subject = "Admission Application Status";
-          $body = "
-              <html>
-              <body>
-                  <div><strong>Hello,</strong></div><br><br>
-                  <div style='padding-top:8px;'>
-                      Your admission application has been <strong>$admsta</strong><br>
-                      <strong>Admin Remark:</strong> $admrmk
-                  </div>
-              </body>
-              </html>
-          ";
-         $query = mysqli_query($con, "SELECT FirstName tbluser WHERE ID='$cid' ");
-         $FirstName = $FirstName['FirstName'];
-          // Send Email using OOP
-          $emailService = new EmailService();
-          if ($emailService->sendEmail($toemail, $FirstName, $subject, $body)) {
-              echo "<script>alert('Admin Remark and Status has been updated. Email sent successfully.');</script>";
-          } else {
-              echo "<script>alert('Admin Remark and Status updated, but email failed to send.');</script>";
-          }
-  
-          echo "<script>window.location.href ='pending-stolenIDapplication.php'</script>";
-      }
-  }
-  else{
-   echo "<script>alert('Something Went Wrong. Please try again.');</script>";
-   echo "<script>window.location.href ='pending-stolenIDapplication.php'</script>";
-    } 
+        $cid = $_GET['aticid'];
+        $admrmk = $_POST['AdminRemark'];
+        $admsta = $_POST['status'];
+        $feeamt = $_POST['feeamt'];
+        $toemail = $_POST['useremail'];
+
+        // Database update query
+        $query = mysqli_query($con, "UPDATE tblstolenid SET AdminRemark='$admrmk', FeeAmount='$feeamt', AdminStatus='$admsta' WHERE UserId='$cid'");
+
+        if (!$query) {
+            die("SQL Error: " . mysqli_error($con));  // Display MySQL errors
+        } else {
+            echo "<script>alert('Record updated successfully.');</script>";
+        }
+
+        // Fetch FirstName and Email correctly
+        $query = mysqli_query($con, "SELECT FirstName, Email FROM tbluser WHERE ID='$cid'");
+
+        if (!$query) {
+            die("SQL Error: " . mysqli_error($con));  // Check for errors
+        } elseif (mysqli_num_rows($query) == 0) {
+            echo "<script>alert('No user found with the given ID.');</script>";
+        } else {
+            $result = mysqli_fetch_assoc($query);
+            $FirstName = $result['FirstName'];
+            $email = $result['Email'];
+
+            // Include PHPMailer
+            include('../PHPMailer/mailer_demo.php');
+
+            // Prepare email details
+            $Subject = "Admission Application Status";
+            $Body = "
+                <html>
+                <body>
+                    <div><strong>Hello, $FirstName</strong></div><br><br>
+                    <div style='padding-top:8px;'>
+                        Your admission application has been <strong>$admsta</strong><br>
+                        <strong>Admin Remark:</strong> $admrmk
+                        <br> 
+                        Your fee amount is <strong>$feeamt</strong>
+                    </div>
+                </body>
+                </html>
+            ";
+
+            // Send email
+            if (sendMail($email, $Subject, $Body)) {
+                // Redirect to the pending applications page after email is sent
+                echo "<script>
+                        alert('Email sent successfully to $email');
+                        window.location.href = 'pending-stolenIDapplication.php';
+                      </script>";
+            } else {
+                echo "<script>alert('Email sending failed. Please check your SMTP settings.');</script>";
+            }
+        }
+    }
 }
- ?>
+?>
+
+
 
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
-<?php include ('layout,stolenid.php')?>
+<?php include ('layout/stolenid.php')?>
 <body class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar"
 data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 <?php include('includes/header.php');?>
@@ -257,9 +277,13 @@ if($row['AdminStatus']=="2")
 <?php include('includes/footer.php');?>
   <!-- BEGIN VENDOR JS-->
  
-  <?php include('includes/print.php');
-  CallPrint(strid)
-  ?>
+  <?php 
+  include('includes/print.php');
+  
+  // Ensure the script tag is added in the right place
+  echo '<script>CallPrint("exampl");</script>'; 
+?>
+
 <script type="text/javascript">
 
   //For report file
