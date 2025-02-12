@@ -37,11 +37,9 @@ if (strlen($_SESSION['aid']) == 0) {
             // Include PHPMailer
             include('../PHPMailer/mailer_demo.php');
             if ($admsta == 1) {
-              $statusMessage = "Your stolen ID application has been <strong>selected</strong>.";
+              $statusMessage = "<strong>selected</strong>.";
           } elseif ($admsta == 2) {
-              $statusMessage = "Your stolen ID application has been <strong>rejected</strong>.";
-          } else {
-              $statusMessage = "Your stolen ID application status is currently <strong>pending</strong>.";
+              $statusMessage = "<strong>rejected</strong>.";
           }
             // Prepare email details
             $Subject = "Stolen ID Application Status";
@@ -50,7 +48,7 @@ if (strlen($_SESSION['aid']) == 0) {
                 <body>
                     <div><strong>Hello, $FirstName</strong></div><br><br>
                     <div style='padding-top:8px;'>
-                        Your stolen ID application has been <strong>$admsta</strong><br>
+                        Your stolen ID application has been <strong>$statusMessage</strong><br>
                         <strong>Admin Remark:</strong> $admrmk
                         <br> 
                         Your fee amount is <strong>$feeamt</strong>
