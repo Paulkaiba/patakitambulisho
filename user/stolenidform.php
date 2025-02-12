@@ -13,7 +13,7 @@ include('includes/dbconnection.php');
 // Check if session UID is empty
 if (empty($_SESSION['uid'])) {
     echo '<script>alert("Session UID is empty. Redirecting to logout.php.");</script>';
-    echo '<script>setTimeout(function(){ window.location.href = "logout.php"; }, 2000);</script>'; // Delay for 2 seconds
+    echo '<script>setTimeout(function(){ window.location.href = "logout.php"; }, 2000);</script>';
     exit();
 }
 
@@ -32,44 +32,47 @@ $user_details_check_uid = mysqli_fetch_assoc($query_check_uid);
 // Check if user details are fetched
 if (!$user_details_check_uid) {
     echo '<script>alert("You need to apply for a new ID first. Redirecting to newIDparentsconfirm.php.");</script>';
-    echo '<script>setTimeout(function(){ window.location.href = "newIDparentsconfirm.php"; }, 2000);</script>'; // Delay for 2 seconds
+    echo '<script>setTimeout(function(){ window.location.href = "newIDparentsconfirm.php"; }, 2000);</script>';
     exit();
 }
 
-// Continue with the rest of the code if UID exists
-
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Define folder to store uploaded images
+// Process form only when submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["userpic"]) && isset($_FILES["uploadAbstract"])) {
     $targetDir = "userimages/";
 
     $userpicName = $_FILES["userpic"]["name"];
-    $uploadAbstractName = isset($_FILES["uploadAbstract"]) ? $_FILES["uploadAbstract"]["name"] : null;
+    $uploadAbstractName = $_FILES["uploadAbstract"]["name"];
 
     // Check if both files are uploaded
     if (!empty($userpicName) && !empty($uploadAbstractName)) {
-        $userpicPath = $targetDir . $userpicName;
-        $uploadAbstractPath = $targetDir . $uploadAbstractName;
+        // Check file size (limit: 8MB)
+        $maxFileSize = 8 * 1024 * 1024; // 8MB in bytes
+        if ($_FILES["userpic"]["size"] > $maxFileSize || $_FILES["uploadAbstract"]["size"] > $maxFileSize) {
+            echo '<script>alert("Error: One or both files exceed the 8MB size limit.");</script>';
+            exit();
+        }
 
-        // Move uploaded files to the defined folder with their original names
-        if (move_uploaded_file($_FILES["userpic"]["tmp_name"], $userpicPath) && move_uploaded_file($_FILES["uploadAbstract"]["tmp_name"], $uploadAbstractPath)) {
-            // Prepare SQL statement to insert image data into the database
+        $userpicPath = $targetDir . basename($userpicName);
+        $uploadAbstractPath = $targetDir . basename($uploadAbstractName);
+
+        // Move uploaded files
+        if (move_uploaded_file($_FILES["userpic"]["tmp_name"], $userpicPath) &&
+            move_uploaded_file($_FILES["uploadAbstract"]["tmp_name"], $uploadAbstractPath)) {
+            
+            // Prepare SQL statement
             $sql = "INSERT INTO tblstolenid (UserId, fullname, userpic, dob, gender, fathername, mothername, maritalstatus, partnername, partnerid, districtofbirth, tribe, clan, family, homedistrict, constituency, location, subLocation, Occupation, UploadAbstract, Declaration, Signature) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            // Initialize a prepared statement
             $stmt = mysqli_stmt_init($con);
 
-            // Check if the SQL statement is prepared successfully
             if (mysqli_stmt_prepare($stmt, $sql)) {
-                // Bind parameters and execute statement
                 mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssss", $uid, $fullname, $userpicName, $dob, $gender, $fathername, $mothername, $maritalstatus, $partnername, $partnerid, $districtofbirth, $tribe, $clan, $family, $homedistrict, $constituency, $location, $subLocation, $occupation, $uploadAbstractName, $Declaration, $Signature);
 
-                // Assign values to parameters
+                // Assign values
                 $uid = $_SESSION['uid'];
                 $fullname = $_POST['fullname'];
                 $dob = $_POST['dob'];
-                $gender = isset($_POST['gender']) ? $_POST['gender'] : null;
+                $gender = $_POST['gender'] ?? null;
                 $fathername = $_POST['fathername'];
                 $mothername = $_POST['mothername'];
                 $maritalstatus = $_POST['maritalstatus'];
@@ -81,17 +84,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $family = $_POST['family'];
                 $homedistrict = $_POST['homedistrict'];
                 $constituency = $_POST['constituency'];
-                $location = isset($_POST['location']) ? $_POST['location'] : null;
-                $subLocation = isset($_POST['sublocation']) ? $_POST['sublocation'] : null;
-                $occupation = isset($_POST['occupation']) ? $_POST['occupation'] : null;
+                $location = $_POST['location'] ?? null;
+                $subLocation = $_POST['sublocation'] ?? null;
+                $occupation = $_POST['occupation'] ?? null;
                 $Declaration = $_POST['Declaration'];
                 $Signature = $_POST['Signature'];
 
                 // Execute statement
                 if (mysqli_stmt_execute($stmt)) {
-                    echo '<script>alert("Form submitted successfully!");</script>';
-                    // Redirect or perform any other action after successful submission
-                    echo '<script>window.location.href = "stolenidform.php";</script>';
+                    echo '<script>alert("Form submitted successfully!"); window.location.href = "dashboard.php";</script>';
                 } else {
                     echo "Error inserting data into database: " . mysqli_stmt_error($stmt);
                 }
@@ -99,35 +100,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error preparing SQL statement: " . mysqli_error($con);
             }
         } else {
-            echo "Error uploading files.";
+            echo '<script>alert("Error uploading files.");</script>';
         }
     } else {
-        echo "Please upload both userpic and uploadAbstract.";
+        echo '<script>alert("Please upload both userpic and uploadAbstract.");</script>';
     }
 }
 
 // Fetch user details from tbladmapplications
 $query = mysqli_query($con, "SELECT * FROM tbladmapplications WHERE UserId = '{$_SESSION['uid']}'");
 
-// Check if query executed successfully
 if (!$query) {
     echo 'Error fetching user details: ' . mysqli_error($con);
     exit();
 }
 
-// Fetch the user details
+// Fetch user details
 $user_details = mysqli_fetch_assoc($query);
 
-// Check if user details are fetched
 if (!$user_details) {
     echo 'User details not found.';
     exit();
 }
 
-// Assign fetched user details to specific variables
+// Assign fetched user details to variables
 $fullname = $user_details['fullname'];
 $dob = $user_details['dob'];
-$gender = isset($user_details['gender']) ? $user_details['gender'] : null;
+$gender = $user_details['gender'] ?? null;
 $fatherName = $user_details['fathername'];
 $motherName = $user_details['mothername'];
 $maritalStatus = $user_details['maritalstatus'];
@@ -139,12 +138,14 @@ $clan = $user_details['clan'];
 $family = $user_details['family'];
 $homeDistrict = $user_details['homedistrict'];
 $constituency = $user_details['constituency'];
-$location =  $user_details['location'];
+$location = $user_details['location'];
 $subLocation = $user_details['sublocation'];
 $occupation = $user_details['occupation'];
 
-include('Applications layout/stolenid.php');
+include('Applicationslayout/stolenid.php');
 ?>
+
+
 
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -369,22 +370,15 @@ include('Applications layout/stolenid.php');
         </div>
     </div>
     <?php include('includes/footer.php'); ?>
-    <!-- BEGIN VENDOR JS-->
-    <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN STACK JS-->
+  
     <?php scriptmwisho() ?>
-    <!-- END STACK JS-->
-    <!-- BEGIN PAGE LEVEL JS-->
-
-   
-    <?php showSubmissionMessage() ?>
-    <?php showHidePartnerFields(select) ?>
+    <?php echo'<script>showHidePartnerFields(select);</script>'; ?>
     
-<?php validateForm() ?>
-<?php removeError(field) ?>
-<?php showSubmissionMessage() ?>
+<?php echo'<script>validateForm();</script>'; ?>
+<?php echo'<script> removeError(field);</script>'; ?>
 
-    <!-- END PAGE LEVEL JS-->
+
+
 </body>
 
 </html>
