@@ -34,8 +34,8 @@ if (isset($_POST['submit'])) {
           $_SESSION['email'] = $email;
 
           //Send OTP via email
-          $subject = "Your OTP for PKMS Registration";
-          $body = "<p>Dear $fname,</p>
+          $Subject = "Your OTP for PKMS Registration";
+          $Body = "<p>Dear $fname,</p>
                    <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
                    <p>This OTP is valid for 10 minutes.</p>
                    <p>Thank you,<br>PKMS Team</p>";
