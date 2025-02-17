@@ -30,9 +30,9 @@ if(isset($_POST['submit']))
 
         $Subject = "Your OTP for PKMS Registration";
         $Body = "<p>Dear $fname,</p>
-                 <p>Your One-Time Password (OTP) for resending process is <strong>$otp</strong>.</p>
-                 
-                 <p>Thank you,<br>PKMS Team</p>";
+                   <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
+                   
+                   <p>Thank you,<br>PKMS Team</p>";
   
                  if (sendMail($email, $Subject, $Body)) {
                   echo "<script>
