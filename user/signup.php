@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
                    <p>This OTP is valid for 10 minutes.</p>
                    <p>Thank you,<br>PKMS Team</p>";
 
-                   if (sendMail($email, $otp)) {
+                   if (sendMail($email, $Subject, $Body)) {
                     echo "<script>
                             alert('OTP sent to your email. Redirecting to the verification page...');
                             window.location.href = 'twofactor.php';
