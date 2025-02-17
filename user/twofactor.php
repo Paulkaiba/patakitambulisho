@@ -5,41 +5,56 @@ session_start();
 echo "<pre>";
 print_r($_SESSION);
 echo "</pre>";
-
+include('includes/dbconnection.php');
+include('../PHPMailer/mailer_demo.php');
+// Handle OTP resend via a GET request
 // Handle OTP resend via a GET request
 if (isset($_GET['resend'])) {
-    // Include the OTP generator and mailer files
-    include('2F/otp_generator.php');
-    include('../PHPMailer/mailer_demo.php');
-    include('includes/dbconnection.php');
 
-    // Generate a new OTP and save it to the session
-    $_SESSION['otp'] = generateOTP();
+  // Ensure email exists in the session
+  if (isset($_SESSION['email'])) {
+      $email = $_SESSION['email'];
 
-    // Ensure email exists in the session
-    if (isset($_SESSION['email'])) {
-        $email = $_SESSION['email'];
-        $otp = $_SESSION['otp'];
+      // Check if an OTP already exists, and prevent duplicate entries
+      if (!isset($_SESSION['otp']) || empty($_SESSION['otp'])) {
+          include('2F/otp_generator.php');
+        
 
-        $query = mysqli_query($con, "SELECT FirstName FROM tbluser WHERE Email = $email"); 
+          // Generate a new OTP
+          $_SESSION['otp'] = generateOTP();
+      }
 
-        $FirstName = $fname;
+      $otp = $_SESSION['otp']; // Use existing or newly generated OTP
 
-        $Subject = "Your OTP for PKMS Registration";
-        $Body = "<p>Dear $fname,</p>
-                 <p>Your One-Time Password (OTP) for resending process is <strong>$otp</strong>.</p>
-                 
-                 <p>Thank you,<br>PKMS Team</p>";
+      // Use a prepared statement to prevent SQL injection
+      $stmt = $con->prepare("SELECT FirstName FROM tbluser WHERE Email = ?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $result = $stmt->get_result();
 
-        // Call the sendMail function
-        if (sendMail($email, $Subject, $Body)) {
-            echo "<script>alert('A new OTP has been sent to your registered email.');</script>";
-        } else {
-            echo "<script>alert('Failed to send OTP. Please try again later.');</script>";
-        }
-    } else {
-        echo "<script>alert('No email address found in session.');</script>";
-    }
+      if ($row = $result->fetch_assoc()) {
+          $fname = $row['FirstName']; // Correct variable assignment
+      } else {
+          echo "<script>alert('No user found with this email.');</script>";
+          exit(); // Stop execution if no user is found
+      }
+
+      $stmt->close(); // Close the prepared statement
+
+      $Subject = "Your OTP for PKMS Registration";
+      $Body = "<p>Dear $fname,</p>
+               <p>Your One-Time Password (OTP) for resending process is <strong>$otp</strong>.</p>
+               <p>Thank you,<br>PKMS Team</p>";
+
+      // Call the sendMail function
+      if (sendMail($email, $Subject, $Body)) {
+          echo "<script>alert('A new OTP has been sent to your registered email.');</script>";
+      } else {
+          echo "<script>alert('Failed to send OTP. Please try again later.');</script>";
+      }
+  } else {
+      echo "<script>alert('No email address found in session.');</script>";
+  }
 }
 
 // Verify OTP when the "Verify" button is pressed
@@ -80,6 +95,8 @@ if (isset($_POST['verify'])) {
         echo "<script>alert('Invalid OTP. Please try again.');</script>";
     }
 }
+
+include('layouts/SLFRC.php');
 ?>
 
 
