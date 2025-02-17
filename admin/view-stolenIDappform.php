@@ -7,7 +7,7 @@ if (strlen($_SESSION['aid']) == 0) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $cid = $_GET['aticid'];
+        $cid = $_GET['userid'];
         $admrmk = $_POST['AdminRemark'];
         $admsta = $_POST['status'];
         $feeamt = $_POST['feeamt'];
