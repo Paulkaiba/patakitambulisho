@@ -20,8 +20,18 @@ if (isset($_GET['resend'])) {
         $email = $_SESSION['email'];
         $otp = $_SESSION['otp'];
 
+        $query = mysqli_query($con, "SELECT FirstName FROM tbluser WHERE Email = $email"); 
+
+        $FirstName = $fname;
+
+        $Subject = "Your OTP for PKMS Registration";
+        $Body = "<p>Dear $fname,</p>
+                 <p>Your One-Time Password (OTP) for resending process is <strong>$otp</strong>.</p>
+                 
+                 <p>Thank you,<br>PKMS Team</p>";
+
         // Call the sendMail function
-        if (sendMail($email, $otp)) {
+        if (sendMail($email, $Subject, $Body)) {
             echo "<script>alert('A new OTP has been sent to your registered email.');</script>";
         } else {
             echo "<script>alert('Failed to send OTP. Please try again later.');</script>";

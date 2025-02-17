@@ -24,14 +24,17 @@ if(isset($_POST['submit']))
         $_SESSION['otp'] = $otp;
         $_SESSION['email'] = $email;
   
-        //Send OTP via email
-        $subject = "Your OTP for PKMS Registration";
-        $body = "<p>Dear $fname,</p>
-                 <p>Your One-Time Password (OTP) for completing the registration process is <strong>$otp</strong>.</p>
-                 <p>This OTP is valid for 10 minutes.</p>
+        $query = mysqli_query($con, "SELECT FirstName FROM tbluser WHERE Email = $email"); 
+
+        $FirstName = $fname;
+
+        $Subject = "Your OTP for PKMS Registration";
+        $Body = "<p>Dear $fname,</p>
+                 <p>Your One-Time Password (OTP) for resending process is <strong>$otp</strong>.</p>
+                 
                  <p>Thank you,<br>PKMS Team</p>";
   
-                 if (sendMail($email, $otp)) {
+                 if (sendMail($email, $Subject, $Body)) {
                   echo "<script>
                           alert('OTP sent to your email. Redirecting to the verification page...');
                           window.location.href = 'twofactorf.php';
