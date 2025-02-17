@@ -47,5 +47,159 @@ echo '<script>
                 partnerFields.style.display = "none";
             }
         }
+
+        function validateForm() {
+        var isValid = true;
+
+               // Validate full name
+        var fullname = document.forms["submit"]["fullname"].value;
+        if (fullname === "") {
+            document.getElementById("fullnameError").style.display = "block";
+
+            isValid = false;
+        }
+
+        // Validate citizen picture
+        var citizenpic = document.forms["submit"]["citizenpic"].value;
+        if (citizenpic === "") {
+            document.getElementById("citizenpicError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate date of birth
+        var dob = document.forms["submit"]["dob"].value;
+        if (dob === "") {
+            document.getElementById("dobError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate gender
+        var gender = document.forms["submit"]["gender"].value;
+        if (gender === "") {
+            document.getElementById("genderError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate fathers name
+        var fathername = document.forms["submit"]["fathername"].value;
+        if (fathername === "") {
+            document.getElementById("fathernameError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate mothers name
+        var mothername = document.forms["submit"]["mothername"].value;
+        if (mothername === "") {
+            document.getElementById("mothernameError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate marital status
+        var maritalstatus = document.forms["submit"]["maritalstatus"].value;
+        if (maritalstatus === "") {
+            isValid = false;
+        }
+
+        // Validate partners name if marital status is Married
+        var partnername = document.forms["submit"]["partnername"].value;
+        if (maritalstatus === "Married" && partnername === "") {
+            document.getElementById("partnernameError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate partners ID number if marital status is Married
+        var partnerid = document.forms["submit"]["partnerid"].value;
+        if (maritalstatus === "Married" && partnerid === "") {
+            document.getElementById("partneridError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate district of birth
+        var districtofbirth = document.forms["submit"]["districtofbirth"].value;
+        if (districtofbirth === "") {
+            document.getElementById("districtofbirthError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate tribe
+        var tribe = document.forms["submit"]["tribe"].value;
+        if (tribe === "") {
+            document.getElementById("tribeError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate clan
+        var clan = document.forms["submit"]["clan"].value;
+        if (clan === "") {
+            document.getElementById("clanError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate family
+        var family = document.forms["submit"]["family"].value;
+        if (family === "") {
+            document.getElementById("familyError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate home district
+        var homedistrict = document.forms["submit"]["homedistrict"].value;
+        if (homedistrict === "") {
+            document.getElementById("homedistrictError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate constituency
+        var constituency = document.forms["submit"]["constituency"].value;
+        if (constituency === "") {
+            document.getElementById("constituencyError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate location
+        var location = document.forms["submit"]["location"].value;
+        if (location === "") {
+            document.getElementById("locationError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate sub location
+        var sublocation = document.forms["submit"]["sublocation"].value;
+        if (sublocation === "") {
+            document.getElementById("sublocationError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate occupation
+        var occupation = document.forms["submit"]["occupation"].value;
+        if (occupation === "") {
+            document.getElementById("occupationError").style.display = "block";
+            isValid = false;
+        }
+
+        // Validate signature
+        var signature = document.getElementById("Signature").value.trim();
+        var signatureError = document.getElementById("signatureError");
+
+        // Check if signature is empty
+        if (signature === '') {
+            signatureError.style.display = 'block';
+            isValid = false; // Set isValid to false if signature is empty
+        } else {
+            signatureError.style.display = 'none';
+        }
+
+        return isValid; // Return the isValid flag
+    }
+
+    function removeError(field) {
+        document.getElementById(field + 'Error').style.display = 'none';
+    }
+
+    function showSubmissionMessage() {
+        alert("Form submitted successfully!");
+        // You can also use a notification library or custom HTML element to display the message
+    }
+
     </script>';
 ?>
