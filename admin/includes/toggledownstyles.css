@@ -2,18 +2,28 @@
 .search-bar {
     position: relative;
     width: 100%;
-    transition: all 0.3s ease;
+}
+
+/* Style for the input box */
+#searchdata {
+    width: 100%;
+    padding-right: 30px; /* Add some space on the right side for any icons or decorations */
 }
 
 /* Initially hide the search results */
 .search-results {
     display: none;
-    max-height: 300px;
-    overflow-y: auto;
+    position: absolute;
+    top: 100%; /* Position below the input box */
+    left: 0;
+    width: 100%;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
     padding: 10px;
+    z-index: 1000;
 }
 
 /* To show the search results when the bar is expanded */
