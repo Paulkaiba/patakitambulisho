@@ -4,12 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultsContainer = document.getElementById("search-results");
 
     searchInput.addEventListener("focus", function () {
-        searchBar.classList.add("active"); // Slide down bar when input is focused
+        searchBar.classList.add("active"); // Show results when input is focused
     });
 
     searchInput.addEventListener("blur", function () {
         setTimeout(function () {
-            searchBar.classList.remove("active"); // Slide up when input loses focus
+            searchBar.classList.remove("active"); // Hide results when input loses focus
         }, 200); // Delay to allow time for selecting an option
     });
 
