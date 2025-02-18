@@ -20,10 +20,11 @@
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    max-height: 300px;
-    overflow-y: auto;
+    max-height: 200px; /* Fixed height */
+    overflow-y: auto;  /* Enable vertical scrolling */
     padding: 10px;
     z-index: 1000;
+    border-radius: 5px; /* Optional: rounded corners */
 }
 
 /* To show the search results when the bar is expanded */
@@ -39,7 +40,7 @@
         opacity: 0;
     }
     to {
-        max-height: 300px;
+        max-height: 200px;
         opacity: 1;
     }
 }
