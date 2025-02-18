@@ -1,0 +1,35 @@
+/* Style for the search bar container */
+.search-bar {
+    position: relative;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Initially hide the search results */
+.search-results {
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+/* To show the search results when the bar is expanded */
+.search-bar.active .search-results {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Slide-down animation */
+@keyframes slideDown {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: 300px;
+        opacity: 1;
+    }
+}
