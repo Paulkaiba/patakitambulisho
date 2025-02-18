@@ -287,6 +287,7 @@ if (isset($_POST['search'])) {
 <?php include('includes/footer.php');?>
   <!-- BEGIN VENDOR JS-->
  
+  <script src="includes/search.js"></script>
 
 </body>
 </html>
