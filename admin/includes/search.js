@@ -4,5 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     searchInput.addEventListener("keyup", function () {
         let query = searchInput.value.trim();
+        if (query.length > 0) {
+            fetch("includes/search_ajax.php?q=" + query)
+                .then(response => response.text())
+                .then(data => {
+                    resultsContainer.innerHTML = data;
+                })
+                .catch(error => console.error("Error fetching search results:", error));
+        } else {
+            resultsContainer.innerHTML = "";
+        }
     });
 });
