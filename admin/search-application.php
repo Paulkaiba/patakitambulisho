@@ -89,10 +89,6 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
                          
                           </h5>
                           <div class="form-group">
-
-  <input class="form-control white_bg" id="searchdata" type="text" name="searchdata" required>
-                          </div>
-                          <div class="form-group">
     <div class="search-bar" id="search-bar">
         <input class="form-control white_bg" id="searchdata" type="text" name="searchdata" placeholder="Search by Name or Email" required>
         <div id="search-results" class="search-results"></div>
@@ -101,6 +97,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 <!-- Link to the external CSS file -->
 <link rel="stylesheet" href="path/to/your/styles.css">
+
 
                         </fieldset>
                       </div>
