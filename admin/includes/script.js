@@ -1,30 +1,22 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("approveForm");
-    const approveBtn = document.getElementById("approveBtn");
+$(document).ready(function () {
+    $("#approveBtn").click(function () {
+        let docid = $(this).data("docid");
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission
-
-        let docid = document.getElementById("docidInput").value;
-        approveBtn.disabled = true; // Disable button to prevent multiple clicks
-
-        let formData = new FormData();
-        formData.append('docid', docid);
-
-        fetch('includes/generate_attachment.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            console.log("Server Response:", data);
-            alert(data); // Show success message
-            approveBtn.disabled = false; // Re-enable button
-        })
-        .catch(error => {
-            console.error('Fetch Error:', error);
-            alert("An error occurred. Please try again.");
-            approveBtn.disabled = false;
+        $.ajax({
+            url: 'includes/generate_attachment.php',
+            type: 'POST',
+            data: { docid: docid },
+            success: function (response) {
+                if (response.trim() === 'success') {
+                    alert("Payment Approved & Document Generated");
+                    window.location.href = 'selected-stolenIDapplication.php';
+                } else {
+                    alert("Error: " + response);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("AJAX Error: " + error);
+            }
         });
     });
 });
