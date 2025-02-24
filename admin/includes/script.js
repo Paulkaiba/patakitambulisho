@@ -1,20 +1,30 @@
-function approvePayment(docid) {
-    console.log("Sending docid:", docid); // Debugging log
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("approveForm");
+    const approveBtn = document.getElementById("approveBtn");
 
-    let formData = new FormData();
-    formData.append('docid', docid);
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-    fetch('generate_attachment.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        console.log("Response received:", response);
-        return response.text();
-    })
-    .then(data => {
-        console.log("Server response:", data);
-        alert(data);
-    })
-    .catch(error => console.error('Error:', error));
-}
+        let docid = document.getElementById("docidInput").value;
+        approveBtn.disabled = true; // Disable button to prevent multiple clicks
+
+        let formData = new FormData();
+        formData.append('docid', docid);
+
+        fetch('includes/generate_attachment.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Server Response:", data);
+            alert(data); // Show success message
+            approveBtn.disabled = false; // Re-enable button
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            alert("An error occurred. Please try again.");
+            approveBtn.disabled = false;
+        });
+    });
+});
