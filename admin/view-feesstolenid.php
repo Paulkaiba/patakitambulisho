@@ -133,9 +133,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <!-- Add Approve button -->
                        
                         <form id="approveForm" action="includes/generate_attachment.php" method="POST">
-    <input type="hidden" name="docid" id="docidInput" value="<?php echo $stufid; ?>">
-    <button type="submit" id="approveBtn">Approve & Generate Document</button>
-</form>
+                            <input type="hidden" name="docid" id="docidInput" value="<?php echo $stufid; ?>">
+                            <button type="submit" id="approveBtn">Approve & Generate Document</button>
+                        </form>
 
 
 <script src="includes/script.js" defer></script>
