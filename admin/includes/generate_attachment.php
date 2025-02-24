@@ -1,6 +1,6 @@
 <?php
 include('dbconnection.php');
-include('path/to/printAttachment.php'); // Ensure the function is included
+include('printAttachment.php'); // Ensure the function is included
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['docid'])) {
     $docid = $_POST['docid'];
