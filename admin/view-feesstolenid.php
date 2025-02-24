@@ -131,7 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
                         </table>
                         <!-- Add Approve button -->
-                        <button class="btn-approve" data-docid="<?php echo $stufid; ?>">Approve Payment</button>
+                        <form action="includes/generate_attachment.php" method="POST">
+    <input type="hidden" name="docid" value="<?php echo $docid; ?>">
+    <button type="submit">Approve & Generate Document</button>
+</form>
+
                         <?php
                     }
                 }
