@@ -24,7 +24,7 @@ if(isset($_POST['submit']))
         $_SESSION['otp'] = $otp;
         $_SESSION['email'] = $email;
   
-        $query = mysqli_query($con, "SELECT FirstName FROM tbluser WHERE Email = $email"); 
+        $query = mysqli_query($con, "SELECT FirstName FROM tbluser WHERE Email = '$email'"); 
 
         $FirstName = $fname;
 

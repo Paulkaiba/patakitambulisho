@@ -1,18 +1,28 @@
-<?php
+<?php 
+session_start();
 error_reporting(E_ALL);
 include('dbconnection.php');
-include('printAttachment.php'); // Ensure the function is included
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['docid'])) {
-    $docid = intval($_POST['docid']); // Ensure it's an integer
-    $filePath = printAttachment($docid);
+echo "Debug: Session docid - " . ($_SESSION['docid'] ?? 'Not set') . "<br>";
+echo "Debug: POST docid - " . ($_POST['docid'] ?? 'Not set') . "<br>";
 
-    if ($filePath) {
-        echo "Document saved at: " . $filePath;
-    } else {
-        echo "Error: Unable to generate document.";
-    }
+// Determine the correct docid (prefer POST, fallback to SESSION)
+$docid = (int) ($_POST['docid'] ?? $_SESSION['docid'] ?? 0);
+
+if ($docid <= 0) {
+    die(" Error: Missing or invalid document ID. Final value: " . var_export($docid, true));
+}
+
+echo "✅ Debug: Final docid - $docid <br>";
+
+// Now continue with processing...
+include('printAttachment.php'); // Ensure this file exists and is correctly included
+
+$filePath = printAttachment($docid);
+
+if ($filePath) {
+    echo "<p>Document saved at: " . htmlspecialchars($filePath) . "</p>";
 } else {
-    echo "Invalid request.";
+    echo "<p>Error: Unable to generate document.</p>";
 }
 ?>

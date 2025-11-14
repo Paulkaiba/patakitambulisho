@@ -1,0 +1,11 @@
+
+    Pata Kitambulisho Management System
+
+    Payment Details
+    ----------------------------------
+    Citizen Name: Mary malo
+    Payment Amount: 100
+    Mode of Payment: Mpesa
+    Transaction Number: 0722384400
+    Date of Transaction: 2025-02-18
+    
