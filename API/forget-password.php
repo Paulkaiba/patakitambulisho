@@ -77,8 +77,8 @@ if ($mailOk) {
     echo json_encode([
         'success' => true,
         'message' => 'OTP sent successfully to your email.',
-        'email' => $email
-        // 'otp' => $otp   // DON'T return in production; ok for local testing
+        'email' => $email,
+        "otp" => $otp   // DON'T return in production; ok for local testing
     ]);
 } else {
     echo json_encode(['success'=>false, 'message'=>'Failed to send OTP email.']);
